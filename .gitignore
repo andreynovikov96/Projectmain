@@ -1,0 +1,5 @@
+.idea/
+codebase/
+node_modules/
+webix_v5.2.4_edu/samples/
+*.log
