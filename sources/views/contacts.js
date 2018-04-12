@@ -17,9 +17,7 @@ export default class ContactsView extends JetView{
 			template:"<span class='webix_icon fa-user-circle'></span>#FirstName# #LastName# #Email#",
 			on:{
 				onAfterSelect: (id) =>{
-					let item = this.list.getItem(id);
 					this.setParam("id", id, true);
-					this.app.callEvent("onContactSelect", [item]);
 				}
 			}
 		};
@@ -38,13 +36,16 @@ export default class ContactsView extends JetView{
 	}
 	init(view){
 		this.list = view.queryView({ view: "list"});
-		this.list.parse(contacts);
+		this.list.sync(contacts);
 	}
 	urlChange(){
-		contacts.waitData.then(() => {
-			var id = this.getParam("id");
-			if (id) this.list.select(id);
-			else this.list.select(1);
+		contacts.waitData.then(() =>{
+			let id = this.getParam("id");
+			if(id !== this.list.getSelectedId()){
+				if ( !id || !contacts.exists(id))
+					id = contacts.getFirstId();
+				this.list.select(id);
+			}
 		});
 	}
 }

@@ -18,12 +18,13 @@ export default class WindowView extends JetView{
 						{view:"datepicker", label:"Time", type:"time", name:"Time"}
 					]
 					},
-					{view:"checkbox", label:"Completed", name:"State"},
+					{view:"checkbox", label:"Completed", name:"State", uncheckValue:"Open", checkValue:"Close"},
 					{
 						cols:[
 							{
 								view:"button",
-								label:"Save",
+								id:"buttonAddSave",
+								label:"Add",
 								click: () => {
 									if( this.form.validate() ){
 										let values = this.form.getValues();
@@ -35,14 +36,11 @@ export default class WindowView extends JetView{
 										} else{
 											activities.add(values);
 										}
-										this.$$("popup").hide();
+										this.getRoot().hide();
 									}
 								}
 							},
-							{view:"button", label:"Cancel", click:() => {
-								this.form.clear();
-								this.$$("popup").hide();
-							}
+							{view:"button", label:"Cancel", click:() => this.getRoot().hide()
 							},
 						]
 					}
@@ -61,17 +59,23 @@ export default class WindowView extends JetView{
 			position:"center",
 			width:550,
 			body: form,
-			head: {template:"Add activity"}
+			head: "Add activity"
 		};
 		return win;
 	}
-	init() {
+	init(view) {
 		this.form = this.$$("form");
-		this.on(this.app, "onActivityEdit", (data) => {
-			if (data) {
-				this.form.setValues(data);
-			}
-		});	
+
+		this.on(this.app, "onActivityEdit", (data) =>{
+			this.form.setValues(data);
+			view.getHead().setHTML("Edit activity");
+			this.$$("buttonAddSave").setValue("Save");
+		});
+
+		this.on(view, "onHide", () =>{
+			this.form.clear();
+			this.form.clearValidation();
+		});
 	}
 	showWindow() {
 		this.getRoot().show();

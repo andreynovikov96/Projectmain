@@ -1,7 +1,6 @@
 import {JetView} from "webix-jet";
 import {activities} from "models/activities";
 import {activitytypes} from "models/activitytypes";
-//import {statuses} from "models/statuses";
 import {contacts} from "models/contacts";
 import WindowView from "views/window";
 
@@ -19,12 +18,7 @@ export default class ActivityView extends JetView{
 				{"id":"tomorrow", "value":"Tomorrow"},
 				{"id":"week", "value":"This week"},
 				{"id":"month", "value":"This month"}
-			],
-			/* on: {
-				onChange: function () {
-					$$("mytable").filterByAll();
-				}
-			} */
+			]
 		};
 
 		let button = {
@@ -34,7 +28,6 @@ export default class ActivityView extends JetView{
 			type:"iconButton", 
 			icon:"plus-square", 
 			click:() => {
-				//this.app.callEvent("mytable");
 				this._jetPopup.showWindow();
 			}
 		};
@@ -45,27 +38,20 @@ export default class ActivityView extends JetView{
 			select:true,
 			scrollX: false,
 			columns:[
-				{id:"State", header:"", template:"{common.checkbox()}", width:50},
-				{id:"TypeID", header:["Activity type", {content:"selectFilter"}], sort:"text", collection:activitytypes, width:150},
+				{id:"State", header:"", template:"{common.checkbox()}", uncheckValue:"Open", checkValue:"Close", width:50},
+				{id:"TypeID", header:["Activity type", {content:"selectFilter"}], sort:"text", collection:activitytypes, width:200},
 				{id:"DueDate", header:["Due Date", {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
 				{id:"Details", header:["Details", {content:"textFilter"}], fillspace:true, sort:"string"},
 				{id:"ContactID", header:["Contact", {content:"selectFilter"}], sort:"text", collection:contacts, width:200},
 				{template:"{common.editIcon()}", width:50},
 				{template:"{common.trashIcon()}", width:50}
 			],
-			/* scheme: {
-				$init:(item) => {
-					if (item.State == "Open") item.State = 0;
-					else item.State = 1;
-				}
-			}, */
 			onClick:{
 				"fa-trash":(ev, id) => {
 					webix.confirm ({
 						text: "The data will be cleared. Continue?",
 						callback:function (result) {
 							if (result) {
-								//$$("mytable").remove(id);
 								activities.remove(id);
 							}
 						}
@@ -94,16 +80,6 @@ export default class ActivityView extends JetView{
 		this.table.sync(activities);
 		
 		this._jetPopup = this.ui(WindowView);
-
-		/* activitytypes.waitData.then(()=>{
-			this.table.getColumnConfig("TypeID").collection = activitytypes;
-			$$("mytable").refreshColumns();
-		});
-
-		contacts.waitData.then(()=>{
-			this.table.getColumnConfig("ContactID").collection = contacts;
-			$$("mytable").refreshColumns();
-		});  */
 	}
 	
 } 
