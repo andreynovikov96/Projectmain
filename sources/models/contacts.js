@@ -1,9 +1,9 @@
 export const contacts = new webix.DataCollection({ 
 	url:"http://localhost:8096/api/v1/contacts/",
 	save:"rest->http://localhost:8096/api/v1/contacts/",
-	sсheme: {
+	scheme:{
 		$init: (obj) => {
-			obj.firstName = obj.FirstName;
+			obj.value = `${obj.FirstName} ${obj.LastName}`;
 		}
 	}
 });

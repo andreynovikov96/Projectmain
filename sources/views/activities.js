@@ -8,9 +8,9 @@ import WindowView from "views/window";
 export default class ActivityView extends JetView{
 	config(){
 		
-		let tabbar = {
-			view:"tabbar",
-			id:"tabbarFilter", 
+		let segmented = {
+			view:"segmented",
+			inputWidth:700,
 			options: [
 				{"id":"allView", "value":"All"},
 				{"id":"overdue", "value":"Overdue"},
@@ -34,7 +34,7 @@ export default class ActivityView extends JetView{
 			type:"iconButton", 
 			icon:"plus-square", 
 			click:() => {
-				this.app.callEvent("mytable");
+				//this.app.callEvent("mytable");
 				this._jetPopup.showWindow();
 			}
 		};
@@ -45,20 +45,20 @@ export default class ActivityView extends JetView{
 			select:true,
 			scrollX: false,
 			columns:[
-				{id:"State", header:"", template:"{common.checkbox()}", width:40},
-				{id:"TypeID", header:["Activity type", {content:"selectFilter"}], fillspace:true, sort:"string", collection:activitytypes},
-				{id:"DueDate", header:["Due Date", {content:"dateFilter"}], sort:"string"},
-				{id:"Details", header:["Details", {content:"textFilter"}], sort:"string"},
-				{id:"ContactID", header:["Contact", {content:"selectFilter"}], sort:"int", collection:contacts},
-				{template:"{common.editIcon()}", width:40},
-				{template:"{common.trashIcon()}", width:40}
+				{id:"State", header:"", template:"{common.checkbox()}", width:50},
+				{id:"TypeID", header:["Activity type", {content:"selectFilter"}], sort:"text", collection:activitytypes, width:150},
+				{id:"DueDate", header:["Due Date", {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
+				{id:"Details", header:["Details", {content:"textFilter"}], fillspace:true, sort:"string"},
+				{id:"ContactID", header:["Contact", {content:"selectFilter"}], sort:"text", collection:contacts, width:200},
+				{template:"{common.editIcon()}", width:50},
+				{template:"{common.trashIcon()}", width:50}
 			],
-			scheme: {
+			/* scheme: {
 				$init:(item) => {
 					if (item.State == "Open") item.State = 0;
 					else item.State = 1;
 				}
-			},
+			}, */
 			onClick:{
 				"fa-trash":(ev, id) => {
 					webix.confirm ({
@@ -72,26 +72,27 @@ export default class ActivityView extends JetView{
 					});
 					return false;
 				},
-				"fa-pencil":(e,id)=>{
-					this.setParam("id", id, true);
-					let item = this.$$("mytable").getSelectedItem();
-					this.app.callEvent("dataActivityEdit", [item]);
-					this._jetPopup.showWindow(); 
+				"fa-pencil": (e, id) => {
+					this.app.callEvent("onActivityEdit", [this.table.getItem(id)]);
 
+					this._jetPopup.showWindow();
+					return false;
 				}
 			}
 		};  
 
 		return {
 			rows:[
-				{cols:[tabbar, button]},
+				{cols:[segmented, button]},
 				table
 			]
 		};
 	}
 
-	init(view){
-		view.queryView({view:"datatable"}).sync(activities);
+	init(){
+		this.table = this.$$("mytable");
+		this.table.sync(activities);
+		
 		this._jetPopup = this.ui(WindowView);
 
 		/* activitytypes.waitData.then(()=>{
@@ -102,7 +103,7 @@ export default class ActivityView extends JetView{
 		contacts.waitData.then(()=>{
 			this.table.getColumnConfig("ContactID").collection = contacts;
 			$$("mytable").refreshColumns();
-		}); */
+		});  */
 	}
 	
 } 

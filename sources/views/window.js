@@ -7,55 +7,52 @@ export default class WindowView extends JetView{
 	config(){
 		let form = {
 			view:"form",
+			id:"form",
 			elements: [ {
 				rows: [
 					{view:"textarea", label:"Details", height:150, name:"Details"},
-					{view:"combo", label:"Type", name:"TypeID", options:{data:activitytypes, body:{template:"#Value#"}}},
-					{view:"combo", label:"Contact", name:"ContactID", options:{data:contacts, body:{template:"#FirstName#"}}},
+					{view:"combo", label:"Type", name:"TypeID", invalidMessage:"Can’t be empty!", options:{data:activitytypes, body:{template:"#Value#"}}},
+					{view:"combo", label:"Contact", name:"ContactID", invalidMessage:"Can’t be empty!", options:{data:contacts, body:{template:"#FirstName# #LastName#"}}},
 					{cols:[
 						{view:"datepicker", label:"Date", name:"DueDate"},
 						{view:"datepicker", label:"Time", type:"time", name:"Time"}
 					]
 					},
-					{view:"checkbox", label:"Completed"},
+					{view:"checkbox", label:"Completed", name:"State"},
 					{
 						cols:[
 							{
-								view:"button", 
+								view:"button",
 								label:"Save",
 								click: () => {
-									let values = this.getRoot().queryView({view:"form"}).getValues();
-									this.app.callEvent("onFormSave", [values]);
-									activities.add(values);
-									this.$$("popup").hide();
+									if( this.form.validate() ){
+										let values = this.form.getValues();
+
+										values.Details = values.Details.replace(/<.*?>/g, "");
+
+										if(values.id && activities.exists(values.id)){
+											activities.updateItem(values.id, values);
+										} else{
+											activities.add(values);
+										}
+										this.$$("popup").hide();
+									}
 								}
 							},
-							/* {
-								view:"button", 
-								label:"Save",
-								click: () => { 
-									let values = this.$$("form").getValues();
-									values.Details=values.Details.replace(/<.*?>/g, "");
-									//if(!values.validate())return false;
-									if(!values.ContactID || !values.TypeID) {
-										webix.alert("Please, fill in the form");
-										return false;
-									}
-									if(values.id){
-										activities.updateItem(values.id, values);
-										this.$$("popup").hide();
-									} else{
-										activities.add(values);
-										this.$$("popup").hide();
-									}
-								}
-							}, */
-							{view:"button", label:"Cancel", click:() => this.$$("popup").hide()},
+							{view:"button", label:"Cancel", click:() => {
+								this.form.clear();
+								this.$$("popup").hide();
+							}
+							},
 						]
 					}
 				]
 			}
-			]
+			],
+			rules:{
+				TypeID:webix.rules.isNotEmpty,
+				ContactID:webix.rules.isNotEmpty
+			}
 		};
 
 		let win = {
@@ -68,12 +65,13 @@ export default class WindowView extends JetView{
 		};
 		return win;
 	}
-	init(view) {
-		this.on(this.app, "dataActivityEdit", (data) => {
+	init() {
+		this.form = this.$$("form");
+		this.on(this.app, "onActivityEdit", (data) => {
 			if (data) {
-				view.queryView({view:"form"}).setValues(data);
+				this.form.setValues(data);
 			}
-		});		
+		});	
 	}
 	showWindow() {
 		this.getRoot().show();
