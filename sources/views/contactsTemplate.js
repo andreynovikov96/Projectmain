@@ -1,24 +1,37 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
+import {statuses} from "models/statuses";
 
 export default class infoContacts extends JetView{
 	config(){
 		
-		let info = {
-			view:"template",
-			template:
-			`<div class='contacts'>
-				<div class='contactsName'>#FirstName# #LastName#</div>
-				<img src='https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'>
-				<div class='webix_icon fas fa-envelope infoContacts'> Email: #Email#</div>
-				<div class='webix_icon fas fa-birthday-cake infoContacts'> Birthday: #Birthday#</div>
-				<div class='webix_icon fab fa-skype infoContacts'> Skype: #Skype#</div>
-				<div class='webix_icon fas fa-map-marker infoContacts'> Location: #Address#</div>
-				<div class='webix_icon fas fa-building infoContacts'> Company: #Company#</div>
-				<div class='webix_icon fa-chrome infoContacts'> Website: #Website#</div>
-				<div class='webix_icon fas fa-phone infoContacts'> Phone: #Phone#</div>
-			</div>`			
+		let info = (obj) => {
+			let status = "";
+
+			if( statuses.exists(obj.StatusID) ){
+				status = statuses.getItem(obj.StatusID).Value;
+			}
+			return `<div class='contacts'>
+						<div class='contactsName'>${obj.FirstName} ${obj.LastName}</div>
+						<img src='https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'>
+						<div class='statusContacts'> Status: ${status}</div>
+						<div class='webix_icon fas fa-envelope infoContacts'> Email: ${obj.Email}</div>
+						<div class='webix_icon fas fa-birthday-cake infoContacts'> Birthday: ${obj.Birthday}</div>
+						<div class='webix_icon fab fa-skype infoContacts'> Skype: ${obj.Skype}</div>
+						<div class='webix_icon fas fa-map-marker infoContacts'> Location: ${obj.Address}</div>
+						<div class='webix_icon fa-tag infoContacts'> Job: ${obj.Job}</div>
+						<div class='webix_icon fas fa-building infoContacts'> Company: ${obj.Company}</div>
+						<div class='webix_icon fa-chrome infoContacts'> Website: ${obj.Website}</div>
+						<div class='webix_icon fas fa-phone infoContacts'> Phone: ${obj.Phone}</div>
+					</div>`;			
 		};
+		let infoContacts =
+			{	
+				view:"template",
+				id:"info",
+				template:info,
+				gravity: 3
+			};
 		
 		let button = {
 			cols: [
@@ -28,21 +41,14 @@ export default class infoContacts extends JetView{
 			]
 		};
 
-		return {rows: [button, info]};
+		return {rows: [button, infoContacts]};
 	}
-	init(view) {
-		this.on(this.app, "onContactSelect", (data) => {
-			if(data){
-				view.queryView({view:"template"}).setValues(data);
-			}
-		});
-	}
-	urlChange(view){
+	urlChange(){
 		contacts.waitData.then(() => {
 			var id = this.getParam("id");
 			if (id) {
 				let data = contacts.getItem(id);
-				view.queryView({view:"template"}).setValues(data);
+				this.$$("info").setValues(data);
 			}
 		});
 	}

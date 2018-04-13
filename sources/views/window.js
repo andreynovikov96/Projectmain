@@ -75,6 +75,8 @@ export default class WindowView extends JetView{
 		this.on(view, "onHide", () =>{
 			this.form.clear();
 			this.form.clearValidation();
+			view.getHead().setHTML("Add activity");
+			this.buttonAS.setValue("Add");
 		});
 	}
 	showWindow() {
