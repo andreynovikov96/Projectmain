@@ -1,6 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
-import Info from "views/contactsTemplate";
+//import Info from "views/contactsTemplate";
 //import Form from "views/contactForm";
 
 export default class ContactsView extends JetView{
@@ -42,13 +42,14 @@ export default class ContactsView extends JetView{
 						button						
 					]
 				},
-				Info
+				{$subview:true}
+				//Info
 				
 			]
 		};
 	}
 	init(view){
-		this.list = view.queryView({ view:"list"});
+		this.list = view.queryView({view:"list"});
 		this.list.sync(contacts);
 	}
 	urlChange(){
@@ -60,5 +61,8 @@ export default class ContactsView extends JetView{
 				this.list.select(id);
 			}
 		});
+	}
+	ready () {
+		this.show("contactsTemplate");
 	}
 }

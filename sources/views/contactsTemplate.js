@@ -37,7 +37,7 @@ export default class infoContacts extends JetView{
 		let button = {
 			cols: [
 				{},
-				{view:"button", width:100, label:"Add", type:"iconButton", icon:"edit", click:() => {this.add();}},
+				{view:"button", width:100, label:"Edit", type:"iconButton", icon:"edit", click:() => this.show("contactForm")},
 				{view:"button", width:100, label:"Delete", type:"iconButton", icon:"trash", click:() => {this.delete();}},
 			]
 		};
@@ -46,15 +46,12 @@ export default class infoContacts extends JetView{
 	}
 	urlChange(){
 		contacts.waitData.then(() => {
-			var id = this.getParam("id");
+			var id = this.getParam("id",true);
 			if (id) {
 				let data = contacts.getItem(id);
 				this.$$("info").setValues(data);
 			}
 		});
-	}
-	add() {
-
 	}
 	delete() {
 		
