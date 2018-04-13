@@ -18,7 +18,7 @@ export default class WindowView extends JetView{
 						{view:"datepicker", label:"Time", type:"time", name:"Time"}
 					]
 					},
-					{view:"checkbox", label:"Completed", name:"State", uncheckValue:"Open", checkValue:"Close"},
+					{view:"checkbox", label:"Completed", name:"State", labelWidth:81, uncheckValue:"Open", checkValue:"Close"},
 					{
 						cols:[
 							{
