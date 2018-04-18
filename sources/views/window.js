@@ -23,7 +23,7 @@ export default class WindowView extends JetView{
 						cols:[
 							{
 								view:"button",
-								id:"buttonAddSave",
+								name:"buttonAddSave",
 								label:"Add",
 								click: () => {
 									if( this.form.validate() ){
@@ -69,14 +69,14 @@ export default class WindowView extends JetView{
 		this.on(this.app, "onActivityEdit", (data) =>{
 			this.form.setValues(data);
 			view.getHead().setHTML("Edit activity");
-			this.$$("buttonAddSave").setValue("Save");
+			view.queryView({name:"buttonAddSave"}).setValue("Save");
 		});
 
 		this.on(view, "onHide", () =>{
 			this.form.clear();
 			this.form.clearValidation();
 			view.getHead().setHTML("Add activity");
-			this.buttonAS.setValue("Add");
+			view.queryView({name:"buttonAddSave"}).setValue("Add");
 		});
 	}
 	showWindow() {
