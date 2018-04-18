@@ -27,10 +27,12 @@ export default class ContactsView extends JetView{
 			view:"button",
 			label:"Add contact",
 			type:"iconButton", 
-			inputWidth:150,
+			inputWidth:130,
 			align:"center",
 			icon:"plus",
-			click:() => this.show("contactForm")
+			click:() => {
+				this.show("../contacts?id=new/contactsForm");
+			}
 		};
 
 		return { 
@@ -50,19 +52,13 @@ export default class ContactsView extends JetView{
 	}
 	init(view){
 		this.list = view.queryView({view:"list"});
-		this.list.sync(contacts);
+		this.list.parse(contacts);
 	}
 	urlChange(){
-		contacts.waitData.then(() =>{
-			let id = this.getParam("id");
-			if(id !== this.list.getSelectedId()){
-				if ( !id || !contacts.exists(id))
-					id = contacts.getFirstId();
-				this.list.select(id);
-			}
+		contacts.waitData.then(() => {
+			const id = this.getParam("id",true);
+			if (id === undefined || contacts.getIndexById(id) == -1 && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
+			else if (id && id !=="new") this.list.select(id);
 		});
-	}
-	ready () {
-		this.show("contactsTemplate");
 	}
 }
