@@ -1,7 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
-//import Info from "views/contactsTemplate";
-//import Form from "views/contactForm";
 
 export default class ContactsView extends JetView{
 	config(){
@@ -44,9 +42,7 @@ export default class ContactsView extends JetView{
 						button						
 					]
 				},
-				{$subview:true}
-				//Info
-				
+				{$subview:true}				
 			]
 		};
 	}
