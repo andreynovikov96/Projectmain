@@ -60,7 +60,10 @@ export default class contactForm extends JetView{
 				]},
 				{cols: [
 					{},
-					{view:"button", label:"Cancel", type: "iconButton", icon: "ban", width:150, align:"right", click:() => this.show("../contactsTemplate")},
+					{view:"button", label:"Cancel", type: "iconButton", icon: "ban", width:150, align:"right", click:() => {
+						let id = this.getParam("id",true);
+						id == "new" ? this.app.show("top/contacts") : this.show("../contactsTemplate");
+					}},
 					{view:"button", label:"Save contact", id:"butAddSave", type: "iconButton", icon: "plus-square", width:150, align:"right",
 						click: () => {
 							if( this.form.validate() ){
