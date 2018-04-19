@@ -7,7 +7,6 @@ export default class WindowView extends JetView{
 	config(){
 		let form = {
 			view:"form",
-			id:"form",
 			elements: [ {
 				rows: [
 					{view:"textarea", label:"Details", height:150, name:"Details"},
@@ -18,7 +17,7 @@ export default class WindowView extends JetView{
 						{view:"datepicker", label:"Time", type:"time", name:"Time"}
 					]
 					},
-					{view:"checkbox", label:"Completed", name:"State", labelWidth:81, uncheckValue:"Open", checkValue:"Close"},
+					{view:"checkbox", label:"Completed", labelWidth:81, name:"State", uncheckValue:"Open", checkValue:"Close"},
 					{
 						cols:[
 							{
@@ -55,7 +54,6 @@ export default class WindowView extends JetView{
 
 		let win = {
 			view:"window",
-			id:"popup",
 			position:"center",
 			width:550,
 			body: form,
@@ -64,7 +62,7 @@ export default class WindowView extends JetView{
 		return win;
 	}
 	init(view) {
-		this.form = this.$$("form");
+		this.form = view.queryView({view:"form"});
 
 		this.on(this.app, "onActivityEdit", (data) =>{
 			this.form.setValues(data);

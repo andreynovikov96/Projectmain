@@ -1,3 +1,3 @@
 export default {
-
+	"Language": "Language"
 };

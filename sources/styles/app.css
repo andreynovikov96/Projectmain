@@ -109,28 +109,32 @@
 	height: 200px;;
 } */
 .contacts {
-	padding: 10px;
+	float: left;
+	margin-left: 20px;
 }
 .contacts img {
+	float: left;
 	height: 100px;
-	padding-top: 10px;
-	padding-left: 20px;
-	padding-right: 40px;
+	margin-top: 10px;
+	margin-right: 40px;
 }
 
 .statusContacts {
-	width: 150px;
+	width: 100px;
 	text-align:center;
 	font-size: 16px;
-	padding-bottom: 10px;;
 }
 .infoContacts {
+	float: left;
 	min-width: 250px;
-	max-width: 300px;
+	max-width: 400px;
 	margin-bottom: 10px;
 }
 .contactsName {
 	height: 15px;
 	font-size: 20px;
-	padding: 10px;
+}
+.contactsFormImg {
+	width: 100px;
+	height: 100px;
 }
