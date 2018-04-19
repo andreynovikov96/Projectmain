@@ -34,6 +34,7 @@ export default class ActivityView extends JetView{
 
 		let table = {     
 			view: "datatable", 
+			id: "mytable",
 			select:true,
 			scrollX: false,
 			columns:[
@@ -49,7 +50,7 @@ export default class ActivityView extends JetView{
 				"fa-trash":(ev, id) => {
 					webix.confirm ({
 						text: "The data will be cleared. Continue?",
-						callback:(result) => {
+						callback:function (result) {
 							if (result) {
 								activities.remove(id);
 							}
@@ -58,8 +59,9 @@ export default class ActivityView extends JetView{
 					return false;
 				},
 				"fa-pencil": (e, id) => {
-					this._jetPopup.showWindow();
 					this.app.callEvent("onActivityEdit", [this.table.getItem(id)]);
+
+					this._jetPopup.showWindow();
 					return false;
 				}
 			}
@@ -73,9 +75,9 @@ export default class ActivityView extends JetView{
 		};
 	}
 
-	init(view){
-		this.table = view.queryView({view:"datatable"});
-		this.table.parse(activities);
+	init(){
+		this.table = this.$$("mytable");
+		this.table.sync(activities);
 		
 		this._jetPopup = this.ui(WindowView);
 	}

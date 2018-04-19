@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
+import Info from "views/contactsTemplate";
 
 export default class ContactsView extends JetView{
 	config(){
@@ -21,40 +22,30 @@ export default class ContactsView extends JetView{
 			}
 		};
 
-		let button = {
-			view:"button",
-			label:"Add contact",
-			type:"iconButton", 
-			inputWidth:130,
-			align:"center",
-			icon:"plus",
-			click:() => {
-				this.show("../contacts?id=new/contactsForm");
-			}
-		};
-
 		return { 
 			cols: [
-				{gravity:0.4, 
-					rows: [
-						header,
-						contactsList,
-						button						
-					]
+				{gravity:0.5, rows: [
+					header,
+					contactsList,						
+				]
 				},
-				{$subview:true}				
+				Info
+				
 			]
 		};
 	}
 	init(view){
-		this.list = view.queryView({view:"list"});
-		this.list.parse(contacts);
+		this.list = view.queryView({ view: "list"});
+		this.list.sync(contacts);
 	}
 	urlChange(){
-		contacts.waitData.then(() => {
-			const id = this.getParam("id",true);
-			if (id === undefined || contacts.getIndexById(id) == -1 && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
-			else if (id && id !=="new") this.list.select(id);
+		contacts.waitData.then(() =>{
+			let id = this.getParam("id");
+			if(id !== this.list.getSelectedId()){
+				if ( !id || !contacts.exists(id))
+					id = contacts.getFirstId();
+				this.list.select(id);
+			}
 		});
 	}
 }
