@@ -8,8 +8,8 @@ export default class settingsView extends JetView{
 			rows:[
 				{ template:_("Settings"), type:"header" },
 				{ name:"lang", optionWidth: 120, view:"segmented", label: _("Language"), options:[
-					{ id:"en", value:"English" },
-					{ id:"ru", value:"Russian" }
+					{ id:"en", value:_("English")},
+					{ id:"ru", value:_("Russian")}
 				], click:() => this.toggleLanguage() }, 
 				{}
 			]

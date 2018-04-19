@@ -6,25 +6,26 @@ import WindowView from "views/window";
 
 export default class ActivityView extends JetView{
 	config(){
-		
+		const _ = this.app.getService("locale")._;
+
 		let segmented = {
 			view:"segmented",
-			inputWidth:700,
+			inputWidth:800,
 			options: [
-				{"id":"allView", "value":"All"},
-				{"id":"overdue", "value":"Overdue"},
-				{"id":"completed", "value":"Completed"},
-				{"id":"today", "value":"Today"},
-				{"id":"tomorrow", "value":"Tomorrow"},
-				{"id":"week", "value":"This week"},
-				{"id":"month", "value":"This month"}
+				{id:"allView", value:_("All")},
+				{id:"overdue", value:_("Overdue")},
+				{id:"completed", value:_("Completed")},
+				{id:"today", value:_("Today")},
+				{id:"tomorrow", value:_("Tomorrow")},
+				{id:"week", value:_("This week")},
+				{id:"month", value:_("This month")}
 			]
 		};
 
 		let button = {
 			view:"button", 
-			width:150, 
-			label:"Add activity",
+			width:200, 
+			label:_("Add activity"),
 			type:"iconButton", 
 			icon:"plus-square", 
 			click:() => {
@@ -38,10 +39,10 @@ export default class ActivityView extends JetView{
 			scrollX: false,
 			columns:[
 				{id:"State", header:"", template:"{common.checkbox()}", uncheckValue:"Open", checkValue:"Close", width:50},
-				{id:"TypeID", header:["Activity type", {content:"selectFilter"}], sort:"text", collection:activitytypes, width:200},
-				{id:"DueDate", header:["Due Date", {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
-				{id:"Details", header:["Details", {content:"textFilter"}], fillspace:true, sort:"string"},
-				{id:"ContactID", header:["Contact", {content:"selectFilter"}], sort:"text", collection:contacts, width:200},
+				{id:"TypeID", header:[_("Activity type"), {content:"selectFilter"}], sort:"text", collection:activitytypes, width:200},
+				{id:"DueDate", header:[_("Due Date"), {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
+				{id:"Details", header:[_("Details"), {content:"textFilter"}], fillspace:true, sort:"string"},
+				{id:"ContactID", header:[_("Contact"), {content:"selectFilter"}], sort:"text", collection:contacts, width:200},
 				{template:"{common.editIcon()}", width:50},
 				{template:"{common.trashIcon()}", width:50}
 			],

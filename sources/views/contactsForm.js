@@ -20,21 +20,21 @@ export default class contactForm extends JetView{
 					{margin:10, rows:[
 						{view:"text", label:_("First Name"), name:"FirstName", invalidMessage:"Please, enter your first name.", labelWidth:100},
 						{view:"text", label:_("Last Name"), name:"LastName", invalidMessage:"Please, enter your last name.", labelWidth:100},
-						{view:"datepicker", label:_("Joining date"), name:"DueDate", labelWidth:100},
+						{view:"text", label:_("Email"), name:"Email",invalidMessage:"Wrong email.", labelWidth:100},
 						{view:"combo", label:_("Status"), name:"Status", labelWidth:100, options:{data:statuses, body:{template:"#Value#"}}},
 						{view:"text", label:_("Job"), name:"Job", labelWidth:100},
 						{view:"text", label:_("Company"), name:"Company", labelWidth:100},
 						{view:"text", label:_("Website"), name:"Website", labelWidth:100},
-						{view:"text", label:_("Address"), name:"Location", labelWidth:100},
+						
 						{}
 					]},
 					{margin:10, rows:[
-						{view:"text", label:_("Email"), name:"Email",invalidMessage:"Wrong email.", labelWidth:100},
+						{view:"text", label:_("Address"), name:"Address", labelWidth:100},
 						{view:"text", label:_("Skype"), name:"Skype", labelWidth:100},
 						{view:"text", label:_("Phone"), name:"Phone", labelWidth:100},
-						{view:"text", label:_("Location"), name:"Address", labelWidth:100},
-						{view:"datepicker", label:_("Birthday"), name:"Birthday", labelWidth:100},
-						{template: "Place for user's photo", id: "photo"},
+						{view:"datepicker", label:_("BirthDay"), name:"BirthDay", labelWidth:170},
+						{view:"datepicker", label:_("Joining date"), name:"DueDate", labelWidth:170},
+						{template: _("Place for user's photo"), id: "photo"},
 						{ 
 							view:"uploader", 
 							value:_("Upload image"),
@@ -55,17 +55,17 @@ export default class contactForm extends JetView{
 						}, 
 						{view:"button", value:_("Delete photo"), click:() => 
 						{
-							$$("photo").setHTML("Place for user's photo");
+							$$("photo").setHTML(_("Place for user's photo"));
 						}},
 						{}
 					]}
 				]},
 				{cols: [
 					{},
-					{view:"button", label:_("Cancel"), type: "iconButton", icon: "ban", width:150, align:"right", click:() => {
+					{view:"button", label:_("Cancel"), type: "iconButton", icon: "ban", width:130, align:"right", click:() => {
 						this.app.show("top/contacts");
 					}},
-					{view:"button", label:_("Save contact"), type: "iconButton", icon: "plus-square", width:150, align:"right",
+					{view:"button", label:_("Save contact"), type: "iconButton", icon: "plus-square", width:200, align:"right",
 						click: () => {
 							if( this.form.validate() ){
 								let values = this.form.getValues();

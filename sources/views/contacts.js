@@ -43,7 +43,7 @@ export default class ContactsView extends JetView{
 			view:"button",
 			label:_("Add contact"),
 			type:"iconButton", 
-			inputWidth:130,
+			inputWidth:170,
 			align:"center",
 			icon:"plus",
 			click:() => {

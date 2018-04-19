@@ -42,7 +42,7 @@ export default class infoContacts extends JetView{
 		let button = {
 			cols: [
 				{},
-				{view:"button", width:100, label:_("Edit"), type:"iconButton", icon:"edit", click:() => {
+				{view:"button", width:150, label:_("Edit"), type:"iconButton", icon:"edit", click:() => {
 					this.show("../contactsForm");			
 				}}, 
 				{view:"button", width:100, label:_("Delete"), type:"iconButton", icon:"trash", 
@@ -64,7 +64,7 @@ export default class infoContacts extends JetView{
 
 		let table = [
 			{
-				header:"Activities",
+				header:_("Activities"),
 				body:{
 					rows:[ {
 						view: "datatable", 
@@ -74,9 +74,9 @@ export default class infoContacts extends JetView{
 						scrollX: false,
 						columns:[
 							{id:"State", header:"", template:"{common.checkbox()}", uncheckValue:"Open", checkValue:"Close", width:50},
-							{id:"TypeID", header:["Activity type", {content:"selectFilter"}], sort:"string", collection:activitytypes, width:200},
-							{id:"DueDate", header:["Due Date", {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
-							{id:"Details", header:["Details", {content:"textFilter"}], fillspace:true, sort:"string"},
+							{id:"TypeID", header:[_("Activity type"), {content:"selectFilter"}], sort:"string", collection:activitytypes, width:200},
+							{id:"DueDate", header:[_("Due Date"), {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
+							{id:"Details", header:[_("Details"), {content:"textFilter"}], fillspace:true, sort:"string"},
 							{template:"{common.editIcon()}", width:50},
 							{template:"{common.trashIcon()}", width:50}
 						],
@@ -105,7 +105,7 @@ export default class infoContacts extends JetView{
 						label:_("Add activity"),
 						type:"iconButton",
 						icon:"plus-square",  
-						inputWidth:130,
+						inputWidth:200,
 						align:"right",
 						click:() => {
 							this._jetPopup.showWindow();
@@ -115,7 +115,7 @@ export default class infoContacts extends JetView{
 				}	
 			},
 			{
-				header:"Files",
+				header:_("Files"),
 				body:{
 					rows: [
 						{
@@ -125,9 +125,9 @@ export default class infoContacts extends JetView{
 							select:true,
 							scrollX: false,
 							columns:[
-								{id:"Name", header:"Name", sort:"string", fillspace:true},
-								{id:"ChangeDate", header:"Change date",  sort:"date", width:200, format:webix.i18n.dateFormatStr},
-								{id:"Size", header:"Size", sort:"int"},
+								{id:"Name", header:_("Name"), sort:"string", fillspace:true},
+								{id:"ChangeDate", header:_("Change date"),  sort:"date", width:200, format:webix.i18n.dateFormatStr},
+								{id:"Size", header:_("Size"), sort:"int"},
 								{id:"trash", header:"", template:"{common.trashIcon()}", width:50}
 							],
 							onClick:{
@@ -151,7 +151,7 @@ export default class infoContacts extends JetView{
 							label:_("Upload file"), 
 							autosend:false, 
 							multiple:false,
-							inputWidth:120,
+							inputWidth:150,
 							align:"center",		
 							on:{
 								onBeforeFileAdd: (upload) => {    
@@ -200,13 +200,11 @@ export default class infoContacts extends JetView{
 				let data = contacts.getItem(id);
 				this.$$("info").setValues(data);
 			}
-			this.$$("tableActivities").parse(activities);
-			let  tableActivities = [];
-			this.$$("tableActivities").data.each((a)=>{
-				if (a.ContactID == id) tableActivities.push(a);
+			this.$$("tableActivities").sync(activities, function(){
+				this.filter(function(data){
+					return data.ContactID == id;
+				});
 			});
-			this.$$("tableActivities").clearAll();
-			this.$$("tableActivities").parse(tableActivities);
 		});
 	}
 }
