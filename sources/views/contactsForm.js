@@ -4,16 +4,11 @@ import {statuses} from "models/statuses";
 
 export default class contactForm extends JetView{
 	config(){
-		let header = {
-			view: "label", 
-			id: "form:header",
-			label:"Edit contacts",
-			align:"center"
-		};
 
 		let form = {
 			view:"form",
 			elements: [
+				{view:"template", template:"", borderless:true, height:40, name:"labelForm"},
 				{margin:40, cols: [
 					{margin:10, rows:[
 						{view:"text", label:"First Name", name:"FirstName", invalidMessage:"Please, enter your first name.", labelWidth:100},
@@ -60,10 +55,10 @@ export default class contactForm extends JetView{
 				]},
 				{cols: [
 					{},
-					{view:"button", label:"Cancel", type: "iconButton", icon: "ban", width:150, align:"right", click:() => {
+					{view:"button", label:"Cancel",  width:100, align:"right", click:() => {
 						this.app.show("top/contacts");
 					}},
-					{view:"button", label:"Save contact", type: "iconButton", icon: "plus-square", width:150, align:"right",
+					{view:"button", name:"buttonSaveAdd", width:100, align:"right",
 						click: () => {
 							if( this.form.validate() ){
 								let values = this.form.getValues();
@@ -91,7 +86,7 @@ export default class contactForm extends JetView{
 			}
 		};
 
-		return {rows: [header, form]};
+		return {rows: [form]};
 	}
 	init(view){
 		this.form = view.queryView({view:"form"});
@@ -99,9 +94,15 @@ export default class contactForm extends JetView{
 	urlChange(view) {
 		contacts.waitData.then(() => {
 			var id = this.getParam("id", true);
-			if (id) {
+			if (id && id !== "new") {
 				let data = contacts.getItem(id);
-				view.queryView({view:"form"}).setValues(data);
+				this.form.setValues(data);
+				view.queryView({name:"labelForm"}).setHTML("Edit contact");
+				view.queryView({name:"buttonSaveAdd"}).setValue("Save");
+			}
+			else {
+				view.queryView({name:"labelForm"}).setHTML("Add contact");
+				view.queryView({name:"buttonSaveAdd"}).setValue("Add"); 
 			}
 		});
 	}

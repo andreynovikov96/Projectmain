@@ -185,7 +185,6 @@ export default class infoContacts extends JetView{
 		};
 	}
 	init() {
-		//this.$$("tableActivities").parse(activities);
 		$$("tableFiles").parse(files);
 
 		this._jetPopup = this.ui(WindowView);
@@ -200,13 +199,11 @@ export default class infoContacts extends JetView{
 				let data = contacts.getItem(id);
 				this.$$("info").setValues(data);
 			}
-			this.$$("tableActivities").parse(activities);
-			let  tableActivities = [];
-			this.$$("tableActivities").data.each((a)=>{
-				if (a.ContactID == id) tableActivities.push(a);
+			this.$$("tableActivities").sync(activities, function(){
+				this.filter(function(data){
+					return data.ContactID == id;
+				});
 			});
-			this.$$("tableActivities").clearAll();
-			this.$$("tableActivities").parse(tableActivities);
 		});
 	}
 }
