@@ -33,7 +33,13 @@ export default class ContactsView extends JetView{
 				onTimedKeyPress () {
 					let value = this.getValue().toLowerCase();
 					$$("mylistSorting").filter((obj) => {
-						return obj.FirstName.toLowerCase().indexOf(value) == 0;
+						let filter = false;
+						for (let key in obj) {
+							if (obj[key].toString().toLowerCase().indexOf(value) != -1) { 
+								filter = true; 
+							}
+						}
+						return filter;
 					});
 				}
 			}
@@ -74,5 +80,13 @@ export default class ContactsView extends JetView{
 			if (id === undefined || contacts.getIndexById(id) == -1 && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
 			else if (id && id !=="new") this.$$("mylistSorting").select(id);
 		});
+	}
+	contactListFilter(obj, value) {
+		let filter = false;
+		for (let prop in obj) {
+			if (obj[prop].toString().toLowerCase().indexOf(value) != -1) { filter = true; }
+		}
+	
+		return filter;
 	}
 }

@@ -83,7 +83,9 @@ export default class infoContacts extends JetView{
 						onClick:{
 							"fa-trash":(ev, id) => {
 								webix.confirm ({
-									text: "The data will be cleared. Continue?",
+									text: _("The data will be cleared. Continue?"),
+									ok: _("Yes"),
+									cancel: _("Cancel"),
 									callback: (result) => {
 										if (result) {
 											activities.remove(id);
@@ -133,7 +135,9 @@ export default class infoContacts extends JetView{
 							onClick:{
 								"fa-trash":(ev, id) => {
 									webix.confirm ({
-										text: "The data will be cleared. Continue?",
+										text: _("The data will be cleared. Continue?"),
+										ok: _("Yes"),
+										cancel: _("Cancel"),
 										callback: (result) => {
 											if (result) {
 												files.remove(id);

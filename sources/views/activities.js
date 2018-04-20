@@ -19,7 +19,10 @@ export default class ActivityView extends JetView{
 				{id:"tomorrow", value:_("Tomorrow")},
 				{id:"week", value:_("This week")},
 				{id:"month", value:_("This month")}
-			]
+			],
+			click: () => { 
+				this.table.filterByAll(); 
+			}
 		};
 
 		let button = {
@@ -49,7 +52,9 @@ export default class ActivityView extends JetView{
 			onClick:{
 				"fa-trash":(ev, id) => {
 					webix.confirm ({
-						text: "The data will be cleared. Continue?",
+						text: _("The data will be cleared. Continue?"),
+						ok: _("Yes"),
+						cancel: _("Cancel"),
 						callback:(result) => {
 							if (result) {
 								activities.remove(id);
