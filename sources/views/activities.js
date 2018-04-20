@@ -28,7 +28,7 @@ export default class ActivityView extends JetView{
 			type:"iconButton", 
 			icon:"plus-square", 
 			click:() => {
-				this._jetPopup.showWindow();
+				this._jetPopup.showWindow({}, false, false);
 			}
 		};
 
@@ -58,8 +58,7 @@ export default class ActivityView extends JetView{
 					return false;
 				},
 				"fa-pencil": (e, id) => {
-					this._jetPopup.showWindow();
-					this.app.callEvent("onActivityEdit", [this.table.getItem(id)]);
+					this._jetPopup.showWindow(this.table.getItem(id), true, false);
 					return false;
 				}
 			}
