@@ -10,6 +10,7 @@ export default class ActivityView extends JetView{
 
 		let segmented = {
 			view:"segmented",
+			id:"segm",
 			inputWidth:800,
 			options: [
 				{id:"allView", value:_("All")},
@@ -20,8 +21,10 @@ export default class ActivityView extends JetView{
 				{id:"week", value:_("This week")},
 				{id:"month", value:_("This month")}
 			],
-			click: () => { 
-				this.table.filterByAll(); 
+			on:{
+				onChange:() => {
+					this.$$("activityData").filterByAll();
+				}
 			}
 		};
 
@@ -32,12 +35,13 @@ export default class ActivityView extends JetView{
 			type:"iconButton", 
 			icon:"plus-square", 
 			click:() => {
-				this._jetPopup.showWindow();
+				this._jetPopup.showWindow({}, false, false);
 			}
 		};
 
 		let table = {     
 			view: "datatable", 
+			id:"activityData",
 			select:true,
 			scrollX: false,
 			columns:[
@@ -64,8 +68,7 @@ export default class ActivityView extends JetView{
 					return false;
 				},
 				"fa-pencil": (e, id) => {
-					this._jetPopup.showWindow();
-					this.app.callEvent("onActivityEdit", [this.table.getItem(id)]);
+					this._jetPopup.showWindow(this.$$("activityData").getItem(id), true, false);
 					return false;
 				}
 			}
@@ -79,11 +82,9 @@ export default class ActivityView extends JetView{
 		};
 	}
 
-	init(view){
-		this.table = view.queryView({view:"datatable"});
-		this.table.parse(activities);
-		
+	init(){
 		this._jetPopup = this.ui(WindowView);
+		this.$$("activityData").parse(activities);
 	}
 	
 } 

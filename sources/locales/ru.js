@@ -40,9 +40,9 @@ export default {
 	"Website": "Веб-сайт",
 	"Address": "Адрес",
 	"Skype": "Скайп",
-	"Email": "Email",
+	"Email": "Почта",
 	"Phone": "Телефон",
-	"BirthDay": "Дата Рождения",
+	"Birthday": "Дата Рождения",
 	"Cancel": "Отмена",
 	"Upload image": "Загрузка изображения",
 	"Delete photo": "Удалить фото",
@@ -57,5 +57,6 @@ export default {
 	"Add status": "Добавить статус",
 	"Add type": "Добавить тип",
 	"Value": "Значение",
-	"Icon": "Иконка"
+	"Icon": "Иконка",
+	"Types of filter...": "Тип фильтра..."
 };

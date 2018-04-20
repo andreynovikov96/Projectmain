@@ -68,12 +68,6 @@ export default class WindowView extends JetView{
 
 		this.form = view.queryView({view:"form"});
 
-		this.on(this.app, "onActivityEdit", (data) =>{
-			this.form.setValues(data);
-			view.getHead().setHTML(_("Edit activity"));
-			view.queryView({name:"buttonAddSave"}).setValue(_("Save"));
-		});
-
 		this.on(view, "onHide", () =>{
 			this.form.clear();
 			this.form.clearValidation();
@@ -81,8 +75,17 @@ export default class WindowView extends JetView{
 			view.queryView({name:"buttonAddSave"}).setValue(_("Add"));
 		});
 	}
-	showWindow() {
+	showWindow(data, edit, readOnly) {
+		const _ = this.app.getService("locale")._;
+		
+		this.form.setValues(data);
+		if(edit){
+			this.getRoot().getHead().setHTML(_("Edit activity"));
+			this.getRoot().queryView({name:"buttonAddSave"}).setValue(_("Save"));
+		}
+		if (readOnly){
+			this.getRoot().queryView({name:"ContactID"}).disable();  
+		}
 		this.getRoot().show();
 	}
-	
 }

@@ -59,12 +59,6 @@ export default class TypeWindowView extends JetView{
 
 		this.form = view.queryView({view:"form"});
 
-		this.on(this.app, "onSettingType", (data) =>{
-			this.form.setValues(data);
-			view.getHead().setHTML(_("Edit type"));
-			view.queryView({name:"buttonType"}).setValue(_("Save"));
-		});
-
 		this.on(view, "onHide", () =>{
 			this.form.clear();
 			this.form.clearValidation();
@@ -72,7 +66,14 @@ export default class TypeWindowView extends JetView{
 			view.queryView({name:"buttonType"}).setValue(_("Add"));
 		});
 	}
-	showWindow() {
+	showWindow(data, edit) {
+		const _ = this.app.getService("locale")._;
+		
+		this.form.setValues(data);
+		if(edit){
+			this.getRoot().getHead().setHTML(_("Edit type"));
+			this.getRoot().queryView({name:"buttonType"}).setValue(_("Save"));
+		}
 		this.getRoot().show();
 	}
 	

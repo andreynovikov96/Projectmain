@@ -9,6 +9,7 @@ import WindowView from "views/window";
 export default class infoContacts extends JetView{
 	config(){
 		const _ = this.app.getService("locale")._;
+		let formatDate = webix.i18n.dateFormatStr;
 
 		let info = (obj) => {
 			let status = "";
@@ -19,15 +20,15 @@ export default class infoContacts extends JetView{
 			return `<div class='contacts'>
 						<div class='contactsName'>${obj.FirstName} ${obj.LastName}</div>
 						<img src='https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'>
-						<div class='webix_icon fas fa-envelope infoContacts'> Email: ${obj.Email}</div>
-						<div class='webix_icon fas fa-birthday-cake infoContacts'> Birthday: ${obj.Birthday}</div>
-						<div class='webix_icon fab fa-skype infoContacts'> Skype: ${obj.Skype}</div>
-						<div class='webix_icon fas fa-map-marker infoContacts'> Location: ${obj.Address}</div>
-						<div class='webix_icon fa-tag infoContacts'> Job: ${obj.Job}</div>
-						<div class='webix_icon fas fa-building infoContacts'> Company: ${obj.Company}</div>
-						<div class='webix_icon fa-chrome infoContacts'> Website: ${obj.Website}</div>
-						<div class='webix_icon fas fa-phone infoContacts'> Phone: ${obj.Phone}</div>
-						<div class='statusContacts'> Status: ${status}</div>
+						<div class='webix_icon fas fa-envelope infoContacts'> ${obj.Email}</div>
+						<div class='webix_icon fas fa-birthday-cake infoContacts'> ${formatDate(obj.Birthday)}</div>
+						<div class='webix_icon fab fa-skype infoContacts'> ${obj.Skype}</div>
+						<div class='webix_icon fas fa-map-marker infoContacts'> ${obj.Address}</div>
+						<div class='webix_icon fa-tag infoContacts'> ${obj.Job}</div>
+						<div class='webix_icon fas fa-building infoContacts'> ${obj.Company}</div>
+						<div class='webix_icon fa-chrome infoContacts'> ${obj.Website}</div>
+						<div class='webix_icon fas fa-phone infoContacts'> ${obj.Phone}</div>
+						<div class='statusContacts'> ${status}</div>
 					</div>`;			
 		};
 		
@@ -96,8 +97,7 @@ export default class infoContacts extends JetView{
 								return false;
 							},
 							"fa-pencil": (e, id) => {
-								this._jetPopup.showWindow();
-								this.app.callEvent("onActivityEdit", [this.$$("tableActivities").getItem(id)]);
+								this._jetPopup.showWindow(this.$$("tableActivities").getItem(id), true, true);
 								return false;
 							}
 						}
@@ -110,7 +110,8 @@ export default class infoContacts extends JetView{
 						inputWidth:200,
 						align:"right",
 						click:() => {
-							this._jetPopup.showWindow();
+							let id = this.getParam("id",true);
+							this._jetPopup.showWindow({ContactID:id}, false, true);
 						}
 					}
 					]	

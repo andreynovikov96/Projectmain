@@ -26,9 +26,9 @@ export default class contactForm extends JetView{
 						{view:"text", label:_("Address"), name:"Address", labelWidth:100},
 						{view:"text", label:_("Skype"), name:"Skype", labelWidth:100},
 						{view:"text", label:_("Phone"), name:"Phone", labelWidth:100},
-						{view:"datepicker", label:_("BirthDay"), name:"BirthDay", labelWidth:170},
-						{view:"datepicker", label:_("Joining date"), name:"DueDate", labelWidth:170},
-						{template: _("Place for user's photo"), id: "photo"},
+						{view:"datepicker", label:_("Birthday"), name:"Birthday", labelWidth:170},
+						{view:"datepicker", label:_("Joining date"), name:"StartDate", labelWidth:170},
+						{template: _("Place for user's photo"), id: "photo", height:100},
 						{ 
 							view:"uploader", 
 							value:_("Upload image"),

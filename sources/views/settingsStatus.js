@@ -59,12 +59,6 @@ export default class StatusWindowView extends JetView{
 
 		this.form = view.queryView({view:"form"});
 
-		this.on(this.app, "onSettingStatus", (data) =>{
-			this.form.setValues(data);
-			view.getHead().setHTML(_("Edit status"));
-			view.queryView({name:"buttonStatus"}).setValue(_("Save"));
-		});
-
 		this.on(view, "onHide", () =>{
 			this.form.clear();
 			this.form.clearValidation();
@@ -72,7 +66,14 @@ export default class StatusWindowView extends JetView{
 			view.queryView({name:"buttonStatus"}).setValue(_("Add"));
 		});
 	}
-	showWindow() {
+	showWindow(data, edit) {
+		const _ = this.app.getService("locale")._;
+		
+		this.form.setValues(data);
+		if(edit){
+			this.getRoot().getHead().setHTML(_("Edit status"));
+			this.getRoot().queryView({name:"buttonStatus"}).setValue(_("Save"));
+		}
 		this.getRoot().show();
 	}
 	

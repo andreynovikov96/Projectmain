@@ -47,8 +47,8 @@ export default class settingsView extends JetView{
 							});
 						},
 						"fa-pencil": (e, id) => {
-							this.StatusView.showWindow(id);
-							this.app.callEvent("onSettingStatus", [this.$$("tableStatuses").getItem(id)]);
+							this.StatusView.showWindow(this.$$("tableStatuses").getItem(id), true);
+							return false;
 						}
 					}
 				},
@@ -60,7 +60,7 @@ export default class settingsView extends JetView{
 					inputWidth:180,
 					align:"right",
 					click:() => {
-						this.StatusView.showWindow();
+						this.StatusView.showWindow({}, false);
 					}
 				}
 			]
@@ -94,8 +94,8 @@ export default class settingsView extends JetView{
 							});
 						},
 						"fa-pencil": (e, id) => {
-							this.TypeView.showWindow(id);
-							this.app.callEvent("onSettingType", [this.$$("tableTypes").getItem(id)]);
+							this.TypeView.showWindow(this.$$("tableTypes").getItem(id), true);
+							return false;
 						}
 					}
 				},
@@ -107,7 +107,7 @@ export default class settingsView extends JetView{
 					inputWidth:180,
 					align:"right",
 					click:() => {
-						this.TypeView.showWindow();
+						this.TypeView.showWindow({}, false);
 					}
 				}
 			]

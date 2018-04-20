@@ -25,10 +25,8 @@ export default class ContactsView extends JetView{
 		};
 
 		let listFilter = {
-			view:"text", 
-			id:"mytextFilter",
-			name:"type filter",
-			placeholder:"Types of filter...",
+			view:"text",
+			placeholder:_("Types of filter..."),
 			on: {
 				onTimedKeyPress () {
 					let value = this.getValue().toLowerCase();
