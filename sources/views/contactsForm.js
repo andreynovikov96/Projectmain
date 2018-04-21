@@ -27,29 +27,35 @@ export default class contactForm extends JetView{
 						{view:"text", label:"Phone", name:"Phone", labelWidth:100},
 						{view:"text", label:"Location", name:"Address", labelWidth:100},
 						{view:"datepicker", label:"Birthday", name:"Birthday", labelWidth:100},
-						{template: "Place for user's photo", id: "photo"},
-						{ 
-							view:"uploader", 
-							value:"Upload image",
-							accept:"image/jpg, image/png",       
-							autosend:false, 
-							multiple:false,
-							on: {
-								onBeforeFileAdd(file) {
-									let reader = new FileReader();
-									reader.onload = (event) => {
-										let url = event.target.result;
-										$$("photo").setHTML(`<img class='contactsFormImg' src='${url}'></img>`);
-									};
-									reader.readAsDataURL(file.file);
-									return false;
-								}
+						{cols:[
+							{view:"template", id:"img", height:120, width:130, borderless:true},
+							{
+								rows: [
+									{},
+									{
+										view:"uploader",
+										value:"Change photo",
+										accept:"image/jpeg, image/png",
+										autosend:false,
+										multiple:false,
+										on:{
+											onBeforeFileAdd:(upload)=>{this.beforeAdd(upload);}
+										}
+									},
+									{
+										view:"button", 
+										label:"Delete photo", 
+										click:() => {
+											this.form.setValues({Photo:""}, true);
+											this.showImage();
+										}
+									}
+									
+								]
 							}
-						}, 
-						{view:"button", value:"Delete photo", click:() => 
-						{
-							$$("photo").setHTML("Place for user's photo");
-						}},
+
+						]
+						},
 						{}
 					]}
 				]},
@@ -92,7 +98,10 @@ export default class contactForm extends JetView{
 		this.form = view.queryView({view:"form"});
 	}
 	urlChange(view) {
-		contacts.waitData.then(() => {
+		webix.promise.all([
+			contacts.waitData,
+			statuses.waitData
+		]).then(() =>{
 			var id = this.getParam("id", true);
 			if (id && id !== "new") {
 				let data = contacts.getItem(id);
@@ -103,7 +112,23 @@ export default class contactForm extends JetView{
 			else {
 				view.queryView({name:"labelForm"}).setHTML("Add contact");
 				view.queryView({name:"buttonSaveAdd"}).setValue("Add"); 
+				
 			}
+			this.showImage();
 		});
+	}
+	showImage() {
+		let photo = this.form.getValues().Photo;
+		this.$$("img").setHTML(`<img src='${photo || "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png"}' class='contactsFormImg'>`);
+	}
+	beforeAdd(upload){    
+		let file = upload.file;
+		let reader = new FileReader();
+		reader.onload = (event) =>{
+			this.form.setValues({Photo:event.target.result}, true);
+			this.showImage();
+		};
+		reader.readAsDataURL(file);
+		return false;
 	}
 }

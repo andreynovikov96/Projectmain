@@ -13,7 +13,7 @@ export default class ContactsView extends JetView{
 			view: "list",
 			select:true,
 			borderless:true,
-			template:"<span class='webix_icon fa-user-circle'></span>#FirstName# #LastName# #Email#",
+			template: this.listContacts,
 			on:{
 				onAfterSelect: (id) =>{
 					this.setParam("id", id, true);
@@ -49,12 +49,20 @@ export default class ContactsView extends JetView{
 	init(view){
 		this.list = view.queryView({view:"list"});
 		this.list.parse(contacts);
+		
+		this.on(this.app, "onDeleteContact", () =>{
+			this.urlChange();
+		});
 	}
 	urlChange(){
 		contacts.waitData.then(() => {
 			const id = this.getParam("id",true);
-			if (id === undefined || contacts.getIndexById(id) == -1 && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
+			if (id === undefined || !contacts.exists(id) && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
 			else if (id && id !=="new") this.list.select(id);
 		});
 	}
+	listContacts(obj){
+		return `
+			<div><img class="listImage" src="${obj.Photo || "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png"}"> ${obj.FirstName || ""} ${obj.LastName || ""} ${obj.Email || ""}</div>`;
+	} 
 }
