@@ -5,26 +5,27 @@ import {activities} from "models/activities";
 
 export default class WindowView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		let form = {
 			view:"form",
-			id:"form",
 			elements: [ {
 				rows: [
-					{view:"textarea", label:"Details", height:150, name:"Details"},
-					{view:"combo", label:"Type", name:"TypeID", invalidMessage:"Can’t be empty!", options:{data:activitytypes, body:{template:"#Value#"}}},
-					{view:"combo", label:"Contact", name:"ContactID", invalidMessage:"Can’t be empty!", options:{data:contacts, body:{template:"#FirstName# #LastName#"}}},
+					{view:"textarea", label:_("Details"), height:150, name:"Details"},
+					{view:"combo", label:_("Type"), name:"TypeID", invalidMessage:"Can’t be empty!", options:{data:activitytypes, body:{template:"#Value#"}}},
+					{view:"combo", label:_("Contact"), name:"ContactID", invalidMessage:"Can’t be empty!", options:{data:contacts, body:{template:"#FirstName# #LastName#"}}},
 					{cols:[
-						{view:"datepicker", label:"Date", name:"DueDate"},
-						{view:"datepicker", label:"Time", type:"time", name:"Time"}
+						{view:"datepicker", label:_("Date"), name:"DueDate"},
+						{view:"datepicker", label:_("Time"), type:"time", name:"Time"}
 					]
 					},
-					{view:"checkbox", label:"Completed", name:"State", labelWidth:81, uncheckValue:"Open", checkValue:"Close"},
+					{view:"checkbox", label:_("Completed"), labelWidth:110, name:"State", uncheckValue:"Open", checkValue:"Close"},
 					{
 						cols:[
 							{
 								view:"button",
-								id:"buttonAddSave",
-								label:"Add",
+								name:"buttonAddSave",
+								label:_("Add"),
 								click: () => {
 									if( this.form.validate() ){
 										let values = this.form.getValues();
@@ -40,7 +41,7 @@ export default class WindowView extends JetView{
 									}
 								}
 							},
-							{view:"button", label:"Cancel", click:() => this.getRoot().hide()
+							{view:"button", label:_("Cancel"), click:() => this.getRoot().hide()
 							},
 						]
 					}
@@ -55,32 +56,36 @@ export default class WindowView extends JetView{
 
 		let win = {
 			view:"window",
-			id:"popup",
 			position:"center",
 			width:550,
 			body: form,
-			head: "Add activity"
+			head: _("Add activity")
 		};
 		return win;
 	}
 	init(view) {
-		this.form = this.$$("form");
+		const _ = this.app.getService("locale")._;
 
-		this.on(this.app, "onActivityEdit", (data) =>{
-			this.form.setValues(data);
-			view.getHead().setHTML("Edit activity");
-			this.$$("buttonAddSave").setValue("Save");
-		});
+		this.form = view.queryView({view:"form"});
 
 		this.on(view, "onHide", () =>{
 			this.form.clear();
 			this.form.clearValidation();
-			view.getHead().setHTML("Add activity");
-			this.buttonAS.setValue("Add");
+			view.getHead().setHTML(_("Add activity"));
+			view.queryView({name:"buttonAddSave"}).setValue(_("Add"));
 		});
 	}
-	showWindow() {
+	showWindow(data, edit, readOnly) {
+		const _ = this.app.getService("locale")._;
+		
+		this.form.setValues(data);
+		if(edit){
+			this.getRoot().getHead().setHTML(_("Edit activity"));
+			this.getRoot().queryView({name:"buttonAddSave"}).setValue(_("Save"));
+		}
+		if (readOnly){
+			this.getRoot().queryView({name:"ContactID"}).disable();  
+		}
 		this.getRoot().show();
 	}
-	
 }
