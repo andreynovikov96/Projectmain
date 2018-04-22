@@ -85,6 +85,35 @@ export default class ActivityView extends JetView{
 	init(){
 		this._jetPopup = this.ui(WindowView);
 		this.$$("activityData").parse(activities);
+
+		this.on(this.$$("activityData"), "onAfterFilter", () =>{
+			let value = this.$$("segm").getValue();
+			let today = new Date();
+			today.setHours(0, 0, 0, 0);
+			let tomorrow = new Date(today);
+			tomorrow.setDate(tomorrow.getDate() + 1);
+			let startWeek = new Date(today);
+			startWeek.setDate(today.getDate() - today.getDay() + 1);
+			let endWeek = new Date(today);
+			endWeek.setDate(today.getDate() - today.getDay() + 7);
+			let startMonth = new Date(today);
+			startMonth.setDate(1);
+			let endMonth = new Date(today);
+			endMonth.setMonth(today.getMonth() + 1);
+			endMonth.setDate(0);
+
+			this.$$("activityData").filter((obj) =>{
+				switch (value){
+					case "overdue": return obj.State === "Open" && obj.DueDate < today;
+					case "completed": return obj.State === "Close";
+					case "today": return !(obj.DueDate - today);
+					case "tommorow": return !(obj.DueDate - tomorrow);
+					case "week": return obj.DueDate >= startWeek && obj.DueDate <= endWeek;
+					case "month": return obj.DueDate >= startMonth && obj.DueDate <= endMonth;
+					default: return true;
+				}
+			}, "", true);
+		});
 	}
 	
 } 

@@ -1,3 +1,6 @@
+import {deleteActivity} from "models/activities";
+import {deleteFile} from "models/files";
+
 export const contacts = new webix.DataCollection({ 
 	url:"http://localhost:8096/api/v1/contacts/",
 	save:"rest->http://localhost:8096/api/v1/contacts/",
@@ -12,6 +15,12 @@ export const contacts = new webix.DataCollection({
 			let format = webix.Date.dateToStr("%d-%m-%Y");
 			obj.Birthday = format(obj.Birthday);
 			obj.StartDate = format(obj.StartDate);
+		}
+	},
+	on:{
+		onAfterDelete:(id) =>{
+			deleteActivity(id);
+			deleteFile(id);
 		}
 	}
 });

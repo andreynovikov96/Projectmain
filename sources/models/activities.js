@@ -12,3 +12,10 @@ export const activities =  new webix.DataCollection({
 		}
 	}
 });
+
+export function deleteActivity(id) {
+	for( let key in activities.data.pull){
+		if( activities.getItem(key).ContactID == id)
+			activities.remove(key);
+	}
+}

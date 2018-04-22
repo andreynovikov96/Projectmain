@@ -16,7 +16,7 @@ export default class ContactsView extends JetView{
 			id:"mylistSorting",
 			select:true,
 			borderless:true,
-			template:"<span class='webix_icon fa-user-circle'></span>#FirstName# #LastName# #Email#",
+			template:this.listContacts,
 			on:{
 				onAfterSelect: (id) =>{
 					this.setParam("id", id, true);
@@ -79,12 +79,8 @@ export default class ContactsView extends JetView{
 			else if (id && id !=="new") this.$$("mylistSorting").select(id);
 		});
 	}
-	contactListFilter(obj, value) {
-		let filter = false;
-		for (let prop in obj) {
-			if (obj[prop].toString().toLowerCase().indexOf(value) != -1) { filter = true; }
-		}
-	
-		return filter;
-	}
+	listContacts(obj){
+		return `
+			<div><img class="listImage" src="${obj.Photo || "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png"}"> ${obj.FirstName || ""} ${obj.LastName || ""} ${obj.Email || ""}</div>`;
+	} 
 }
