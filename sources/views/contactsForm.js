@@ -14,7 +14,7 @@ export default class contactForm extends JetView{
 						{view:"text", label:"First Name", name:"FirstName", invalidMessage:"Please, enter your first name.", labelWidth:100},
 						{view:"text", label:"Last Name", name:"LastName", invalidMessage:"Please, enter your last name.", labelWidth:100},
 						{view:"datepicker", label:"Joining date", name:"StartDate", labelWidth:100},
-						{view:"combo", label:"Status", name:"Status", labelWidth:100, options:{data:statuses, body:{template:"#Value#"}}},
+						{view:"combo", label:"Status", name:"StatusID", labelWidth:100, options:{data:statuses, body:{template:"#Value#"}}},
 						{view:"text", label:"Job", name:"Job", labelWidth:100},
 						{view:"text", label:"Company", name:"Company", labelWidth:100},
 						{view:"text", label:"Website", name:"Website", labelWidth:100},
