@@ -18,4 +18,3 @@ export function deleteActivity(id) {
 		if( obj.ContactID == id)
 			activities.remove(obj.id);
 	});
-}

@@ -6,6 +6,7 @@ import Tabbar from "views/contactsTable";
 export default class infoContacts extends JetView{
 	config(){
 		const _ = this.app.getService("locale")._;
+
 		let formatDate = webix.i18n.dateFormatStr;
 
 		let info = (obj) => {
@@ -15,16 +16,16 @@ export default class infoContacts extends JetView{
 			}
 			return `<div class='contacts'>
 						<div class='contactsName'>${obj.FirstName} ${obj.LastName}</div>
-						<img src='https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'>
-						<div class='webix_icon fas fa-envelope infoContacts'> ${obj.Email}</div>
-						<div class='webix_icon fas fa-birthday-cake infoContacts'> ${formatDate(obj.Birthday)}</div>
-						<div class='webix_icon fab fa-skype infoContacts'> ${obj.Skype}</div>
-						<div class='webix_icon fas fa-map-marker infoContacts'> ${obj.Address}</div>
-						<div class='webix_icon fa-tag infoContacts'> ${obj.Job}</div>
-						<div class='webix_icon fas fa-building infoContacts'> ${obj.Company}</div>
-						<div class='webix_icon fa-chrome infoContacts'> ${obj.Website}</div>
-						<div class='webix_icon fas fa-phone infoContacts'> ${obj.Phone}</div>
-						<div class='statusContacts'> ${status}</div>
+						<div><img src="${obj.Photo || "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png"}"></div>
+						<div class='webix_icon fas fa-envelope infoContacts'> Email: ${obj.Email}</div>
+						<div class='webix_icon fas fa-birthday-cake infoContacts'> Birthday: ${formatDate(obj.Birthday)}</div>
+						<div class='webix_icon fab fa-skype infoContacts'> Skype: ${obj.Skype}</div>
+						<div class='webix_icon fas fa-map-marker infoContacts'> Location: ${obj.Address}</div>
+						<div class='webix_icon fa-tag infoContacts'> Job: ${obj.Job}</div>
+						<div class='webix_icon fas fa-building infoContacts'> Company: ${obj.Company}</div>
+						<div class='webix_icon fa-chrome infoContacts'> Website: ${obj.Website}</div>
+						<div class='webix_icon fas fa-phone infoContacts'> Phone: ${obj.Phone}</div>
+						<div class='statusContacts'> Status: ${status}</div>
 					</div>`;			
 		};
 		

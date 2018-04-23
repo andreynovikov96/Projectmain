@@ -4,6 +4,7 @@ import {statuses} from "models/statuses";
 
 export default class contactForm extends JetView{
 	config(){
+
 		const _ = this.app.getService("locale")._;
 
 		let form = {
@@ -28,6 +29,14 @@ export default class contactForm extends JetView{
 						{view:"text", label:_("Phone"), name:"Phone", labelWidth:100},
 						{view:"datepicker", label:_("Birthday"), name:"Birthday", labelWidth:170},
 						{view:"datepicker", label:_("Joining date"), name:"StartDate", labelWidth:170},
+						{}
+					]},
+					{margin:10, rows:[
+						{view:"text", label:"Email", name:"Email",invalidMessage:"Wrong email.", labelWidth:100},
+						{view:"text", label:"Skype", name:"Skype", labelWidth:100},
+						{view:"text", label:"Phone", name:"Phone", labelWidth:100},
+						{view:"text", label:"Location", name:"Address", labelWidth:100},
+						{view:"datepicker", label:"Birthday", name:"Birthday", labelWidth:100},
 						{cols:[
 							{view:"template", id:"img", height:120, width:130, borderless:true},
 							{
@@ -115,7 +124,12 @@ export default class contactForm extends JetView{
 			else {
 				view.queryView({name:"labelForm"}).setHTML(_("Add contact"));
 				view.queryView({name:"buttonSaveAdd"}).setValue(_("Add")); 
-				
+				view.queryView({name:"labelForm"}).setHTML("Edit contact");
+				view.queryView({name:"buttonSaveAdd"}).setValue("Save");
+			}
+			else {
+				view.queryView({name:"labelForm"}).setHTML("Add contact");
+				view.queryView({name:"buttonSaveAdd"}).setValue("Add"); 
 			}
 			this.showImage();
 		});

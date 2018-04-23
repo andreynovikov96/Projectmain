@@ -64,6 +64,7 @@ export default class WindowView extends JetView{
 		return win;
 	}
 	init(view) {
+
 		const _ = this.app.getService("locale")._;
 
 		this.form = view.queryView({view:"form"});
