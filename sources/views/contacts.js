@@ -13,7 +13,6 @@ export default class ContactsView extends JetView{
 
 		let contactsList = {
 			view: "list",
-			id:"mylistSorting",
 			select:true,
 			borderless:true,
 			template:this.listContacts,
@@ -69,14 +68,22 @@ export default class ContactsView extends JetView{
 			]
 		};
 	}
-	init(){
-		this.$$("mylistSorting").parse(contacts);
+	init(view){
+		this.list = view.queryView({view:"list"});
+		this.list.parse(contacts);
+		
+		this.on(this.list.data, "onIdChange", (oldId, newId) =>{
+			this.setParam("id", newId, true);
+		});
 	}
 	urlChange(){
 		contacts.waitData.then(() => {
 			const id = this.getParam("id",true);
-			if (id === undefined || contacts.getIndexById(id) == -1 && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
-			else if (id && id !=="new") this.$$("mylistSorting").select(id);
+			if (id === undefined || !contacts.exists(id) && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
+			else if (id && id !=="new") {
+				this.list.select(id);
+				this.list.showItem(id);
+			}
 		});
 	}
 	listContacts(obj){

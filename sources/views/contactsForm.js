@@ -62,7 +62,8 @@ export default class contactForm extends JetView{
 				{cols: [
 					{},
 					{view:"button", label:_("Cancel"), width:100, align:"right", click:() => {
-						this.app.show("top/contacts");
+						let id = this.getParam("id",true);
+						id == "new" ? this.app.show("top/contacts") : this.show("../contactsTemplate");
 					}},
 					{view:"button", name:"buttonSaveAdd", width:100, align:"right",
 						click: () => {
@@ -73,7 +74,7 @@ export default class contactForm extends JetView{
 								} else{
 									contacts.add(values);
 								}
-								this.app.show("top/contacts");
+								this.app.show(`top/contacts?id=${values.id}/contactsTemplate`);
 							}
 						},
 						on:{
