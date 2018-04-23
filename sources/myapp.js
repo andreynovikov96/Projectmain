@@ -1,5 +1,5 @@
 import "./styles/app.css";
-import {JetApp} from "webix-jet";
+import {JetApp, plugins} from "webix-jet";
 
 webix.ready(() => {
 	var app = new JetApp({
@@ -8,6 +8,7 @@ webix.ready(() => {
 		start:		"/top/contacts",
 		debug:true
 	});
+	app.use(plugins.Locale);
 	app.render();
 
 	app.attachEvent("app:error:resolve", function(name, error){

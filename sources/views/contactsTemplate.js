@@ -5,12 +5,12 @@ import Tabbar from "views/contactsTable";
 
 export default class infoContacts extends JetView{
 	config(){
-		
+		const _ = this.app.getService("locale")._;
+
 		let formatDate = webix.i18n.dateFormatStr;
 
 		let info = (obj) => {
 			let status = "";
-
 			if( statuses.exists(obj.StatusID) ){
 				status = statuses.getItem(obj.StatusID).Value;
 			}
@@ -40,10 +40,10 @@ export default class infoContacts extends JetView{
 		let button = {
 			cols: [
 				{},
-				{view:"button", width:100, label:"Edit", type:"iconButton", icon:"edit", click:() => {
+				{view:"button", width:150, label:_("Edit"), type:"iconButton", icon:"edit", click:() => {
 					this.show("../contactsForm");			
 				}}, 
-				{view:"button", width:100, label:"Delete", type:"iconButton", icon:"trash", 
+				{view:"button", width:100, label:_("Delete"), type:"iconButton", icon:"trash", 
 					click:()=>{
 						var id = this.getParam("id", true);
 						webix.confirm({
@@ -64,6 +64,7 @@ export default class infoContacts extends JetView{
 			rows: [button, infoContacts, Tabbar]
 		};
 	}
+	
 	urlChange(){
 		webix.promise.all([
 			contacts.waitData,

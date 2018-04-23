@@ -3,17 +3,20 @@ import {contacts} from "models/contacts";
 
 export default class ContactsView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		let header = {
 			view: "template", 
-			template:"Contacts",
+			template:_("Contacts"),
 			type:"header"
 		};
 
 		let contactsList = {
 			view: "list",
+			id:"mylistSorting",
 			select:true,
 			borderless:true,
-			template: this.listContacts,
+			template:this.listContacts,
 			on:{
 				onAfterSelect: (id) =>{
 					this.setParam("id", id, true);
@@ -21,11 +24,32 @@ export default class ContactsView extends JetView{
 			}
 		};
 
+		let listFilter = {
+			view:"text",
+			placeholder:_("Types of filter..."),
+			on: {
+				onTimedKeyPress () {
+					let value = this.getValue().toLowerCase();
+					$$("mylistSorting").filter((obj) => {
+						let filter = false;
+						for (let key in obj) {
+							if (key !== "id" && key !== "Photo") {
+								if (obj[key].toString().toLowerCase().indexOf(value) != -1) { 
+									filter = true; 
+								}
+							}
+						}
+						return filter;
+					});
+				}
+			}
+		};
+
 		let button = {
 			view:"button",
-			label:"Add contact",
+			label:_("Add contact"),
 			type:"iconButton", 
-			inputWidth:130,
+			inputWidth:170,
 			align:"center",
 			icon:"plus",
 			click:() => {
@@ -38,6 +62,7 @@ export default class ContactsView extends JetView{
 				{gravity:0.4, 
 					rows: [
 						header,
+						listFilter,
 						contactsList,
 						button						
 					]
