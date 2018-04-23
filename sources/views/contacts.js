@@ -31,15 +31,13 @@ export default class ContactsView extends JetView{
 				onTimedKeyPress () {
 					let value = this.getValue().toLowerCase();
 					$$("mylistSorting").filter((obj) => {
-						let filter = false;
 						for (let key in obj) {
 							if (key !== "id" && key !== "Photo") {
 								if (obj[key].toString().toLowerCase().indexOf(value) != -1) { 
-									filter = true; 
+									return true; 
 								}
 							}
 						}
-						return filter;
 					});
 				}
 			}

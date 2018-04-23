@@ -2,6 +2,7 @@ import "./styles/app.css";
 import {JetApp, plugins} from "webix-jet";
 
 webix.ready(() => {
+	webix.CustomScroll.init();
 	var app = new JetApp({
 		id:			APPNAME,
 		version:	VERSION,

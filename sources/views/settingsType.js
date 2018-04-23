@@ -1,80 +1,27 @@
-import {JetView} from "webix-jet";
+import SettingsTable from "views/settingsTable";
 import {activitytypes} from "models/activitytypes";
 
-export default class TypeWindowView extends JetView{
-	config(){
+export default class TypesView extends SettingsTable{
+
+	init(view){
+
 		const _ = this.app.getService("locale")._;
 
-		let form = {
-			view:"form",
-			elements: [ {
-				rows: [
-					{view:"text", label:_("Value"), name:"Value"},
-					{view:"text", label:_("Icon"), name:"Icon"},
-					{
-						cols:[
-							{
-								view:"button",
-								name:"buttonType",
-								label:_("Add"),
-								click: () => {
-									if( this.form.validate() ){
-										let values = this.form.getValues();
-
-										values.Value = values.Value.replace(/<.*?>/g, "");
-
-										if(values.id && activitytypes.exists(values.id)){
-											activitytypes.updateItem(values.id, values);
-										} else{
-											activitytypes.add(values);
-										}
-										this.getRoot().hide();
-									}
-								}
-							},
-							{view:"button", label:_("Cancel"), click:() => this.getRoot().hide()
-							},
-						]
-					}
-				]
-			}
-			],
-			rules:{
-				Value:webix.rules.isNotEmpty,
-				Icon:webix.rules.isNotEmpty
-			}
-		};
-
-		let winType = {
-			view:"window",
-			position:"center",
-			width:400,
-			body: form,
-			head: _("Add type")
-		};
-		return winType;
+		view.queryView({view:"datatable"}).parse(activitytypes);
+		this.button = this.getRoot().queryView({view:"button"});
+		this.button.define("label", _("Add type"));
+		this.button.refresh();
 	}
-	init(view) {
+
+	add(){
 		const _ = this.app.getService("locale")._;
-
-		this.form = view.queryView({view:"form"});
-
-		this.on(view, "onHide", () =>{
-			this.form.clear();
-			this.form.clearValidation();
-			view.getHead().setHTML(_("Add type"));
-			view.queryView({name:"buttonType"}).setValue(_("Add"));
+		activitytypes.add({
+			Value:_("New value"), Icon:"New icon"
 		});
 	}
-	showWindow(data, edit) {
-		const _ = this.app.getService("locale")._;
-		
-		this.form.setValues(data);
-		if(edit){
-			this.getRoot().getHead().setHTML(_("Edit type"));
-			this.getRoot().queryView({name:"buttonType"}).setValue(_("Save"));
-		}
-		this.getRoot().show();
+    
+	delete(id){
+		if(id)
+			activitytypes.remove(id);
 	}
-	
 }

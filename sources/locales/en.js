@@ -58,5 +58,7 @@ export default {
 	"Add type": "Add type",
 	"Value": "Value",
 	"Icon": "Icon",
-	"Types of filter...": "Types of filter..."
+	"Types of filter...": "Types of filter...",
+	"New status": "New status",
+	"New value": "New value"
 };

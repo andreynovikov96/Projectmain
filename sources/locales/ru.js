@@ -58,5 +58,7 @@ export default {
 	"Add type": "Добавить тип",
 	"Value": "Значение",
 	"Icon": "Иконка",
-	"Types of filter...": "Тип фильтра..."
+	"Types of filter...": "Тип фильтра...",
+	"New status": "Новый статус",
+	"New value": "Новое значение"
 };
