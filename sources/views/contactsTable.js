@@ -6,10 +6,11 @@ import WindowView from "views/window";
 
 export default class TabbarContacts extends JetView{
 	config(){
-		
+		const _ = this.app.getService("locale")._;
+        
 		let table = [
 			{
-				header:"Activities",
+				header:_("Activities"),
 				body:{
 					rows:[ 
 						{
@@ -20,16 +21,18 @@ export default class TabbarContacts extends JetView{
 							scrollX: false,
 							columns:[
 								{id:"State", header:"", template:"{common.checkbox()}", uncheckValue:"Open", checkValue:"Close", width:50},
-								{id:"TypeID", header:["Activity type", {content:"selectFilter"}], sort:"string", collection:activitytypes, width:200},
-								{id:"DueDate", header:["Due Date", {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
-								{id:"Details", header:["Details", {content:"textFilter"}], fillspace:true, sort:"string"},
+								{id:"TypeID", header:[_("Activity type"), {content:"selectFilter"}], sort:"string", collection:activitytypes, width:200},
+								{id:"DueDate", header:[_("Due Date"), {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
+								{id:"Details", header:[_("Details"), {content:"textFilter"}], fillspace:true, sort:"string"},
 								{template:"{common.editIcon()}", width:50},
 								{template:"{common.trashIcon()}", width:50}
 							],
 							onClick:{
 								"fa-trash":(ev, id) => {
 									webix.confirm ({
-										text: "The data will be cleared. Continue?",
+										text: _("The data will be cleared. Continue?"),
+										ok: _("Yes"),
+										cancel: _("Cancel"),
 										callback: (result) => {
 											if (result) {
 												activities.remove(id);
@@ -47,10 +50,10 @@ export default class TabbarContacts extends JetView{
 						},
 						{
 							view:"button", 
-							label:"Add activity",
+							label:_("Add activity"),
 							type:"iconButton",
 							icon:"plus-square",  
-							inputWidth:130,
+							inputWidth:200,
 							align:"right",
 							click: () => {
 								let id = this.getParam("id",true);
@@ -61,7 +64,7 @@ export default class TabbarContacts extends JetView{
 				}	
 			},
 			{
-				header:"Files",
+				header:_("Files"),
 				body:{
 					rows: [
 						{
@@ -71,15 +74,17 @@ export default class TabbarContacts extends JetView{
 							select:true,
 							scrollX: false,
 							columns:[
-								{id:"name", header:"Name", sort:"string", fillspace:true},
-								{id:"lastModifiedDate", header:"Change date",  sort:"date", width:200, format:webix.i18n.dateFormatStr},
-								{id:"size", header:"Size", sort:"int"},
+								{id:"name", header:_("Name"), sort:"string", fillspace:true},
+								{id:"lastModifiedDate", header:_("Change date"),  sort:"date", width:200, format:webix.i18n.dateFormatStr},
+								{id:"size", header:_("Size"), sort:"int"},
 								{id:"", header:"", template:"{common.trashIcon()}", width:50}
 							],
 							onClick:{
 								"fa-trash":(ev, id) => {
 									webix.confirm ({
-										text: "The data will be cleared. Continue?",
+										text: _("The data will be cleared. Continue?"),
+										ok: _("Yes"),
+										cancel: _("Cancel"),
 										callback: (result) => {
 											if (result) {
 												files.remove(id);
@@ -94,10 +99,10 @@ export default class TabbarContacts extends JetView{
 							view:"uploader",
 							type:"iconButton",
 							icon:"cloud-upload",
-							label:"Upload file", 
+							label:_("Upload file"), 
 							autosend:false, 
 							multiple:false,
-							inputWidth:120,
+							inputWidth:170,
 							align:"center",		
 							on:{
 								onBeforeFileAdd: (upload) => {    

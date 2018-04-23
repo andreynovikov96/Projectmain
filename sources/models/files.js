@@ -5,7 +5,7 @@ export const files = new webix.DataCollection({
 		{id:3, name:"file3.pdf", lastModifiedDate:"03-03-2003", size:"3", ContactID:"3"}
 	],
 	scheme:{
-		$init:(obj) =>{
+		$change:(obj) =>{
 			let parser = webix.Date.strToDate("%d-%m-%Y");
 			obj.ChangeDate = parser(obj.ChangeDate);
 		},
