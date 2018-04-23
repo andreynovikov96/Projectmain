@@ -13,6 +13,7 @@ export default class ContactsView extends JetView{
 
 		let contactsList = {
 			view: "list",
+			id:"mylistSorting",
 			select:true,
 			borderless:true,
 			template:this.listContacts,
@@ -32,8 +33,10 @@ export default class ContactsView extends JetView{
 					$$("mylistSorting").filter((obj) => {
 						let filter = false;
 						for (let key in obj) {
-							if (obj[key].toString().toLowerCase().indexOf(value) != -1) { 
-								filter = true; 
+							if (key !== "id" && key !== "Photo") {
+								if (obj[key].toString().toLowerCase().indexOf(value) != -1) { 
+									filter = true; 
+								}
 							}
 						}
 						return filter;

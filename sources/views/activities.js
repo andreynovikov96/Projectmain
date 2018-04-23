@@ -85,35 +85,21 @@ export default class ActivityView extends JetView{
 	init(){
 		this._jetPopup = this.ui(WindowView);
 		this.$$("activityData").parse(activities);
-
+		
 		this.on(this.$$("activityData"), "onAfterFilter", () =>{
+			let currentDate  = webix.Date.dayStart(new Date());
 			let value = this.$$("filterActivities").getValue();
-			let today = new Date();
-			today.setHours(0, 0, 0, 0);
-			let tomorrow = new Date(today);
-			tomorrow.setDate(tomorrow.getDate() + 1);
-			let startWeek = new Date(today);
-			startWeek.setDate(today.getDate() - today.getDay() + 1);
-			let endWeek = new Date(today);
-			endWeek.setDate(today.getDate() - today.getDay() + 7);
-			let startMonth = new Date(today);
-			startMonth.setDate(1);
-			let endMonth = new Date(today);
-			endMonth.setMonth(today.getMonth() + 1);
-			endMonth.setDate(0);
-
 			this.$$("activityData").filter((obj) =>{
 				switch (value){
-					case "overdue": return obj.State === "Open" && obj.DueDate < today;
-					case "completed": return obj.State === "Close";
-					case "today": return !(obj.DueDate - today);
-					case "tomorrow": return !(obj.DueDate - tomorrow);
-					case "week": return obj.DueDate >= startWeek && obj.DueDate <= endWeek;
-					case "month": return obj.DueDate >= startMonth && obj.DueDate <= endMonth;
+					case "overdue": return obj.DueDate < currentDate  && obj.State == "Open";
+					case "completed": return obj.State == "Close";
+					case "today": return webix.Date.equal(obj.DueDate, currentDate);
+					case "tomorrow": return webix.Date.equal(obj.DueDate, webix.Date.add(currentDate, 1, "day", true));
+					case "week": return webix.Date.equal(webix.Date.weekStart(obj.DueDate), webix.Date.weekStart(currentDate));
+					case "month": return webix.Date.equal(webix.Date.monthStart(obj.DueDate), webix.Date.monthStart(currentDate));
 					default: return true;
 				}
 			}, "", true);
 		});
 	}
-	
 } 
