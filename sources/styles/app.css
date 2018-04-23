@@ -120,6 +120,7 @@
 .contacts img {
 	float: left;
 	height: 100px;
+	width: 110px;
 	margin-top: 10px;
 	margin-right: 40px;
 }

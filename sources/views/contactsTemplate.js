@@ -15,7 +15,7 @@ export default class infoContacts extends JetView{
 			}
 			return `<div class='contacts'>
 						<div class='contactsName'>${obj.FirstName} ${obj.LastName}</div>
-						<img src='https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'>
+						<img src="${obj.Photo || "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png"}">
 						<div class='webix_icon fas fa-envelope infoContacts'> ${obj.Email}</div>
 						<div class='webix_icon fas fa-birthday-cake infoContacts'> ${formatDate(obj.Birthday)}</div>
 						<div class='webix_icon fab fa-skype infoContacts'> ${obj.Skype}</div>
