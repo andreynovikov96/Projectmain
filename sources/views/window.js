@@ -25,7 +25,6 @@ export default class WindowView extends JetView{
 							{
 								view:"button",
 								name:"buttonAddSave",
-								label:_("Add"),
 								click: () => {
 									if( this.form.validate() ){
 										let values = this.form.getValues();

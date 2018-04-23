@@ -10,7 +10,7 @@ export default class ActivityView extends JetView{
 
 		let segmented = {
 			view:"segmented",
-			id:"segm",
+			id:"filterActivities",
 			inputWidth:800,
 			options: [
 				{id:"allView", value:_("All")},
@@ -87,7 +87,7 @@ export default class ActivityView extends JetView{
 		this.$$("activityData").parse(activities);
 
 		this.on(this.$$("activityData"), "onAfterFilter", () =>{
-			let value = this.$$("segm").getValue();
+			let value = this.$$("filterActivities").getValue();
 			let today = new Date();
 			today.setHours(0, 0, 0, 0);
 			let tomorrow = new Date(today);
@@ -107,7 +107,7 @@ export default class ActivityView extends JetView{
 					case "overdue": return obj.State === "Open" && obj.DueDate < today;
 					case "completed": return obj.State === "Close";
 					case "today": return !(obj.DueDate - today);
-					case "tommorow": return !(obj.DueDate - tomorrow);
+					case "tomorrow": return !(obj.DueDate - tomorrow);
 					case "week": return obj.DueDate >= startWeek && obj.DueDate <= endWeek;
 					case "month": return obj.DueDate >= startMonth && obj.DueDate <= endMonth;
 					default: return true;
