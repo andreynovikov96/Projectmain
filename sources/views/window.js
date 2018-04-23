@@ -7,7 +7,6 @@ export default class WindowView extends JetView{
 	config(){
 		let form = {
 			view:"form",
-			id:"form",
 			elements: [ {
 				rows: [
 					{view:"textarea", label:"Details", height:150, name:"Details"},
@@ -18,13 +17,13 @@ export default class WindowView extends JetView{
 						{view:"datepicker", label:"Time", type:"time", name:"Time"}
 					]
 					},
-					{view:"checkbox", label:"Completed", name:"State", labelWidth:81, uncheckValue:"Open", checkValue:"Close"},
+					{view:"checkbox", label:"Completed", labelWidth:81, name:"State", uncheckValue:"Open", checkValue:"Close"},
 					{
 						cols:[
 							{
 								view:"button",
-								id:"buttonAddSave",
-								label:"Add",
+								name:"buttonAddSave",
+								value:"Add",
 								click: () => {
 									if( this.form.validate() ){
 										let values = this.form.getValues();
@@ -55,7 +54,6 @@ export default class WindowView extends JetView{
 
 		let win = {
 			view:"window",
-			id:"popup",
 			position:"center",
 			width:550,
 			body: form,
@@ -64,22 +62,25 @@ export default class WindowView extends JetView{
 		return win;
 	}
 	init(view) {
-		this.form = this.$$("form");
-
-		this.on(this.app, "onActivityEdit", (data) =>{
-			this.form.setValues(data);
-			view.getHead().setHTML("Edit activity");
-			this.$$("buttonAddSave").setValue("Save");
-		});
+		this.form = view.queryView({view:"form"});
 
 		this.on(view, "onHide", () =>{
 			this.form.clear();
 			this.form.clearValidation();
 			view.getHead().setHTML("Add activity");
-			this.buttonAS.setValue("Add");
+			view.queryView({name:"buttonAddSave"}).setValue("Add");
 		});
 	}
-	showWindow() {
+	showWindow(data, edit, readOnly) {
+
+		this.form.setValues(data);
+		if(edit){
+			this.getRoot().getHead().setHTML("Edit activity");
+			this.getRoot().queryView({name:"buttonAddSave"}).setValue("Save");
+		}
+		if (readOnly){
+			this.getRoot().queryView({name:"ContactID"}).disable();  
+		}
 		this.getRoot().show();
 	}
 	

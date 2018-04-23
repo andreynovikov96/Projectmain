@@ -12,3 +12,9 @@ export const activities =  new webix.DataCollection({
 		}
 	}
 });
+export function deleteActivity(id) {
+	activities.data.each((obj) =>{
+		if( obj.ContactID == id)
+			activities.remove(obj.id);
+	});
+}
