@@ -16,9 +16,9 @@ export const files = new webix.DataCollection({
 	}
 });
 
-export function deleteFile(id){
-	for( let key in files.data.pull) {
-		if( files.getItem(key).ContactID == id)
-			files.remove(key);
-	}
+export function deleteFile(id) {
+	files.data.each((obj) =>{
+		if( obj.ContactID == id)
+			files.remove(obj.id);
+	});
 }

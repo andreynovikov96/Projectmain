@@ -50,15 +50,18 @@ export default class ContactsView extends JetView{
 		this.list = view.queryView({view:"list"});
 		this.list.parse(contacts);
 		
-		this.on(this.app, "onDeleteContact", () =>{
-			this.urlChange();
+		this.on(this.list.data, "onIdChange", (oldId, newId) =>{
+			this.setParam("id", newId, true);
 		});
 	}
 	urlChange(){
 		contacts.waitData.then(() => {
 			const id = this.getParam("id",true);
 			if (id === undefined || !contacts.exists(id) && id !=="new") this.show(`../contacts?id=${contacts.getFirstId()}/contactsTemplate`);
-			else if (id && id !=="new") this.list.select(id);
+			else if (id && id !=="new") {
+				this.list.select(id);
+				this.list.showItem(id);
+			}
 		});
 	}
 	listContacts(obj){

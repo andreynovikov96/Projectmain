@@ -1,6 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
-import {activities} from "models/activities";
 import {statuses} from "models/statuses";
 import Tabbar from "views/contactsTable";
 
@@ -52,7 +51,6 @@ export default class infoContacts extends JetView{
 							callback:(result) => {
 								if(result){
 									contacts.remove(id);
-									activities.remove(id);
 									this.app.show("top/contacts");
 								}
 							}
