@@ -15,3 +15,10 @@ export const files = new webix.DataCollection({
 		}
 	}
 });
+
+export function deleteFile(id){
+	for( let key in files.data.pull) {
+		if( files.getItem(key).ContactID == id)
+			files.remove(key);
+	}
+}
