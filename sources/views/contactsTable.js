@@ -10,7 +10,7 @@ export default class TabbarContacts extends JetView{
         
 		let table = [
 			{
-				header:"Activities",
+				header:_("Activities"),
 				body:{
 					rows:[ 
 						{
@@ -21,7 +21,6 @@ export default class TabbarContacts extends JetView{
 							scrollX: false,
 							columns:[
 								{id:"State", header:"", template:"{common.checkbox()}", uncheckValue:"Open", checkValue:"Close", width:50},
-
 								{id:"TypeID", header:[_("Activity type"), {content:"selectFilter"}], sort:"string", collection:activitytypes, width:200},
 								{id:"DueDate", header:[_("Due Date"), {content:"datepickerFilter"}], sort:"date", format:webix.i18n.dateFormatStr},
 								{id:"Details", header:[_("Details"), {content:"textFilter"}], fillspace:true, sort:"string"},
@@ -34,7 +33,7 @@ export default class TabbarContacts extends JetView{
 										text: _("The data will be cleared. Continue?"),
 										ok: _("Yes"),
 										cancel: _("Cancel"),
-                    callback: (result) => {
+										callback: (result) => {
 											if (result) {
 												activities.remove(id);
 												this.show("contactsTemplate");

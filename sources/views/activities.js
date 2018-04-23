@@ -82,7 +82,7 @@ export default class ActivityView extends JetView{
 		};
 	}
 
-	init(view){
+	init(){
 		this._jetPopup = this.ui(WindowView);
 		this.$$("activityData").parse(activities);
 		
